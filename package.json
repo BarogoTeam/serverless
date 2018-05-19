@@ -1,0 +1,21 @@
+{
+  "name": "zupzup",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BarogoTeam/serverless.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BarogoTeam/serverless/issues"
+  },
+  "homepage": "https://github.com/BarogoTeam/serverless#readme"
+}
