@@ -1,3 +1,60 @@
+service: zupzup
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  region: ap-northeast-2
+
+functions:
+  getCinemas:
+    handler: handler.getCinemas
+    events:
+      - http:
+          path: cinemas
+          method: get
+          documentation:
+            summary: "Create User"
+            description: "Creates a user and then sends a generated password email"
+            requestBody:
+              description: "A user information object"
+            requestModels:
+              application/json: "PutDocumentRequest"
+            pathParams:
+              - name: "username"
+                description: "The username for a user to create"
+                schema:
+                  type: "string"
+                  pattern: "^[-a-z0-9_]+$"
+            queryParams:
+              - name: "membershipType"
+                description: "The user's Membership Type"
+                schema:
+                  type: "string"
+                  enum:
+                    - "premium"
+                    - "standard"
+            cookieParams:
+              - name: "SessionId"
+                description: "A Session ID variable"
+                schema:
+                  type: "string"
+            methodResponses:
+              - statusCode: 201
+                responseBody:
+                  description: "A user object along with generated API Keys"
+                responseModels:
+                  application/json: "PutDocumentResponse"
+              - statusCode: 500
+                responseBody:
+                  description: "An error message when creating a new user"
+                responseModels:
+                  application/json: "ErrorResponse"
+
+
+
+
+
+
 # Welcome to Serverless!
 #
 # This file is the main config file for your service.
@@ -11,16 +68,10 @@
 #
 # Happy Coding!
 
-service: zupzup
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
 # frameworkVersion: "=X.X.X"
-
-provider:
-  name: aws
-  runtime: nodejs6.10
-  region: ap-northeast-2
 
 # you can overwrite defaults here
 #  stage: dev
@@ -54,20 +105,6 @@ provider:
 #  exclude:
 #    - exclude-me.js
 #    - exclude-me-dir/**
-
-functions:
-  hello:
-    handler: handler.hello
-    events:
-      - http:
-          path: hello
-          method: get
-  getAlarms:
-    handler: handler.getAlarms
-    events:
-      - http:
-          path: alarms
-          method: get
 
 
 
