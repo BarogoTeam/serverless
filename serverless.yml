@@ -49,12 +49,14 @@ functions:
                   description: "An error message when creating a new user"
                 responseModels:
                   application/json: "ErrorResponse"
+
 plugins:
   - serverless-openapi-documentation
-
-
+  - serverless-finch
 
 custom:
+  client:
+    bucketName: zupzup-serverless-finch
   documentation:
     version: '1'
     title: 'My API'
