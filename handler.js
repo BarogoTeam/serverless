@@ -2,8 +2,8 @@ const DatabaseUtils = require("./DatabaseUtils").default;
 
 'use strict';
 
-module.exports.getCinemas = async function(event, context, callback) {
-  const db = await DatabaseUtils.connectMongoDB()
+module.exports.getCinemas = async (event, context, callback) => {
+  const db = await DatabaseUtils.connectMongoDB();
 
   new Promise((resolve, reject) => {
     db.collection('alarms').find({}).toArray((err, alarms) => {
