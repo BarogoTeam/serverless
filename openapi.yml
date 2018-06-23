@@ -1,0 +1,64 @@
+openapi: 3.0.0
+components:
+  schemas:
+    PutDocumentRequest:
+      properties:
+        SomeObject:
+          type: object
+          properties:
+            SomeAttribute:
+              type: string
+  securitySchemes: {}
+info:
+  title: My API
+  description: This is my API
+  version: '1'
+paths:
+  /cinemas:
+    get:
+      operationId: getCinemas
+      summary: Create User
+      description: Creates a user and then sends a generated password email
+      parameters:
+        - name: username
+          in: path
+          description: The username for a user to create
+          required: true
+          schema:
+            type: string
+            pattern: '^[-a-z0-9_]+$'
+        - name: membershipType
+          in: query
+          description: The user's Membership Type
+          required: false
+          allowEmptyValue: false
+          schema:
+            type: string
+            enum:
+              - premium
+              - standard
+        - name: SessionId
+          in: cookie
+          description: A Session ID variable
+          required: false
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PutDocumentRequest'
+        description: A user information object
+      responses:
+        '201':
+          description: A user object along with generated API Keys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PutDocumentResponse'
+        '500':
+          description: An error message when creating a new user
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
