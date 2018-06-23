@@ -5,7 +5,8 @@
   "main": "handler.js",
   "dependencies": {
     "dotenv": "^5.0.1",
-    "mongodb": "^3.0.4"
+    "mongodb": "^3.0.4",
+    "serverless-finch": "^2.1.2"
   },
   "devDependencies": {
     "serverless-openapi-documentation": "^0.3.0"
