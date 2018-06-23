@@ -1,13 +1,26 @@
 openapi: 3.0.0
 components:
   schemas:
-    PutDocumentRequest:
+    ErrorResponse:
+      type: object
       properties:
-        SomeObject:
-          type: object
-          properties:
-            SomeAttribute:
-              type: string
+        code:
+          type: integer
+        errorMessages:
+          type: array
+          items:
+            type: string
+    CinemasModel:
+      type: array
+      items:
+        type: object
+        properties:
+          id:
+            type: integer
+          regionId:
+            type: integer
+          cinemaName:
+            type: string
   securitySchemes: {}
 info:
   title: My API
@@ -17,48 +30,18 @@ paths:
   /cinemas:
     get:
       operationId: getCinemas
-      summary: Create User
-      description: Creates a user and then sends a generated password email
-      parameters:
-        - name: username
-          in: path
-          description: The username for a user to create
-          required: true
-          schema:
-            type: string
-            pattern: '^[-a-z0-9_]+$'
-        - name: membershipType
-          in: query
-          description: The user's Membership Type
-          required: false
-          allowEmptyValue: false
-          schema:
-            type: string
-            enum:
-              - premium
-              - standard
-        - name: SessionId
-          in: cookie
-          description: A Session ID variable
-          required: false
-          schema:
-            type: string
+      summary: 영화관 목록을 받아옵니다.
+      description: 영화관 목록을 받아옵니다.
+      parameters: []
       requestBody:
         content:
-          application/json:
+          application/text:
             schema:
-              $ref: '#/components/schemas/PutDocumentRequest'
-        description: A user information object
+              $ref: '#/components/schemas/EmptyRequest'
       responses:
         '201':
-          description: A user object along with generated API Keys
+          description: 시네마 리스트
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PutDocumentResponse'
-        '500':
-          description: An error message when creating a new user
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/CinemasModel'

@@ -12,7 +12,8 @@
     "serverless-openapi-documentation": "^0.3.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "swagger": "serverless openapi generate -o client/dist/openapi.yml"
   },
   "repository": {
     "type": "git",
