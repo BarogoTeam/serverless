@@ -12,106 +12,13 @@ functions:
       - http:
           path: cinemas
           method: get
-          documentation:
-            summary: "영화관 목록을 받아옵니다."
-            description: "영화관 목록을 받아옵니다."
-            requestModels:
-              application/text: "EmptyRequest"
-
-
-            methodResponses:
-              - statusCode: 201
-                responseBody:
-                  description: "시네마 리스트"
-                responseModels:
-                  application/json: "CinemasModel"
-              # - statusCode: 500
-              #   responseBody:
-              #     description: "에러"
-              #   responseModels:
-              #     application/json: "ErrorResponse"
-
-            # requestBody:
-            #   description: "A user information object"
-            # requestModels:
-            #   application/json: "PutDocumentRequest"
-            # pathParams:
-            #   - name: "username"
-            #     description: "The username for a user to create"
-            #     schema:
-            #       type: "string"
-            #       pattern: "^[-a-z0-9_]+$"
-            # queryParams:
-            #   - name: "membershipType"
-            #     description: "The user's Membership Type"
-            #     schema:
-            #       type: "string"
-            #       enum:
-            #         - "premium"
-            #         - "standard"
-            # cookieParams:
-            #   - name: "SessionId"
-            #     description: "A Session ID variable"
-            #     schema:
-            #       type: "string"
-            # methodResponses:
-            #   - statusCode: 201
-            #     responseBody:
-            #       description: "A user object along with generated API Keys"
-            #     responseModels:
-            #       application/json: "CinemasModel"
-            #   - statusCode: 500
-            #     responseBody:
-            #       description: "An error message when creating a new user"
-            #     responseModels:
-            #       application/json: "ErrorResponse"
 
 plugins:
-  - serverless-openapi-documentation
   - serverless-finch
 
 custom:
   client:
     bucketName: zupzup-serverless-finch
-  documentation:
-    version: '1'
-    title: 'My API'
-    description: 'This is my API'
-    models:
-      - name: "ErrorResponse"
-        description: "This is an error"
-        contentType: "application/json"
-        schema:
-          $schema: "http://json-schema.org/draft-04/schema#"
-          type: object
-          properties:
-            code:
-              type: integer
-            errorMessages:
-              type: array
-              items:
-                type: string
-
-      - name: "CinemasModel"
-        description: "PUT Document response model (external reference example)"
-        contentType: "application/json"
-        schema:
-          $schema: "http://json-schema.org/draft-04/schema#"
-          type: array
-          items:
-            type: object
-            properties:
-              id:
-                type: integer
-              regionId:
-                type: integer
-              cinemaName:
-                type: string
-
-      - name: "EmptyRequest"
-        description: "비어 있음"
-        contentType: "application/text"
-
 
 # Welcome to Serverless!
 #

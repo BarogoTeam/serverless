@@ -33,11 +33,6 @@ paths:
       summary: 영화관 목록을 받아옵니다.
       description: 영화관 목록을 받아옵니다.
       parameters: []
-      requestBody:
-        content:
-          application/text:
-            schema:
-              $ref: '#/components/schemas/EmptyRequest'
       responses:
         '201':
           description: 시네마 리스트
