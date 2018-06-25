@@ -8,6 +8,7 @@ module.exports.getCinemas = async (event, context, callback) => {
 };
 
 module.exports.getScreens = async (event, context, callback) => {
+  // TODO(재연): event.queryStringParameters를 이용해서 cinemaId와 playDate 조작
   const formData = new FormData();
   formData.append('paramList', JSON.stringify({
     "MethodName":"GetPlaySequence",
