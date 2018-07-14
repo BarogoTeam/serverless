@@ -5,6 +5,7 @@ const FormData = require('form-data');
 
 module.exports.getCinemas = async (event, context, callback) => {
   console.log(event.queryStringParameters);
+  callback(null, event);
 };
 
 module.exports.getScreens = async (event, context, callback) => {
@@ -15,7 +16,7 @@ module.exports.getScreens = async (event, context, callback) => {
     "channelType":"HO",
     "osType":"Firefox",
     "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
-    "playDate":"2018-06-24",
+    "playDate":"2018-07-15",
     "cinemaID":"1|0001|1007,1|0001|1013", //NOTE(재연): UI상으로는 2개까지 제한이지만 API로는 무제한
     "representationMovieCode":""
   }));

@@ -13,6 +13,13 @@ functions:
           path: cinemas
           method: get
 
+  getScreens:
+    handler: handler.getScreens
+    events:
+      - http:
+          path: screens
+          method: get
+
 plugins:
   - serverless-finch
 
