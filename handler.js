@@ -4,6 +4,7 @@ const FormData = require('form-data');
 'use strict';
 
 module.exports.getCinemas = (event, context, callback) => {
+  // TODO(재연): 구현필요
   console.log(event.queryStringParameters);
   callback(null, event);
 };
