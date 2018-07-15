@@ -13,7 +13,7 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "deploy-functions": "serverless deploy",
+    "deploy-lambda": "serverless deploy",
     "deploy-openapi": "serverless client deploy"
   },
   "repository": {
