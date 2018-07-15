@@ -12,7 +12,6 @@
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "swagger": "serverless openapi generate -o client/dist/openapi.yml"
   },
   "repository": {
     "type": "git",
