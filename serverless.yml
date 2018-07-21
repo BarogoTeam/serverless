@@ -20,7 +20,7 @@ functions:
           path: screens
           method: get
     environment:
-      http_proxy: http://211.221.139.189:8080 # 출처: https://free-proxy-list.net/
+      http_proxy: http://121.184.72.203:8080 # 출처: https://free-proxy-list.net/
 
 plugins:
   - serverless-finch
