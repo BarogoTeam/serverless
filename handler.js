@@ -1,5 +1,6 @@
 const fetch = require('fetch-with-proxy').default;
 const FormData = require('form-data');
+const _ = require('lodash');
 
 'use strict';
 
@@ -36,7 +37,13 @@ module.exports.getScreens = (event, context, callback) => {
     }
 
     // TODO(재연): 데이터 정제 로직 필요
-    return result;
+    // _.pick(result,)
+    return result.PlaySeqs.Items.map(
+        item => _.mapKeys(_.pick(
+          item,
+          ['ScreenID','MovieCode','StartTime','EndTime','TotalSeatCount','BookingSeatCount']
+        ), (value, key) => _.camelCase(key))
+      )
   }).then(body =>
     callback(null, {
       statusCode: 200,
