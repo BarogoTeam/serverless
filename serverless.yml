@@ -12,6 +12,8 @@ functions:
       - http:
           path: cinemas
           method: get
+    environment:
+      http_proxy: http://121.184.72.203:8080 # 출처: https://free-proxy-list.net/
 
   getScreens:
     handler: handler.getScreens
