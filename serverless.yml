@@ -14,9 +14,6 @@ functions:
           method: get
           cors: true
 
-    environment:
-      http_proxy: http://221.153.58.112:8080 # 출처: https://free-proxy-list.net/
-
   getScreens:
     handler: handler.getScreens
     events:
@@ -24,9 +21,6 @@ functions:
           path: screens
           method: get
           cors: true
-
-    environment:
-      http_proxy: http://221.153.58.112:8080 # 출처: https://free-proxy-list.net/
 
 plugins:
   - serverless-finch
