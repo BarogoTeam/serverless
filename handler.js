@@ -19,13 +19,14 @@ module.exports.getCinemas = (event, context, callback) => {
   formData.append('paramList', JSON.stringify({
     "MethodName":"GetTicketingPage",
     "channelType":"HO",
-    "osType":"Firefox",
-    "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
-    "memberOnNo":""
+    "osType":"Chrome",
+    "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36",
+    "memberOnNo":"0"
   }));
-  axios.post('http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx', formData, axiosConfig).then(response => {
+  axios.post('http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx', formData, _.extend({}, axiosConfig, { headers: formData.getHeaders() })).then(response => {
     return response.data
   }).then(result => {
+    console.log(result)
     if (result.IsOK !== 'true') {
       throw new Error(JSON.stringify(result));
     }
@@ -78,21 +79,13 @@ module.exports.getScreens = (event, context, callback) => {
     "representationMovieCode":""
   }));
 
-  fetch(
-    'http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx',
-    {
-      method: 'POST',
-      body: formData,
-    }
-  ).then(response => {
+  axios.post('http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx', formData, _.extend({}, axiosConfig, { headers: formData.getHeaders() })).then(response => {
     return response.json()
   }).then(result => {
     if (result.IsOK !== 'true') {
       throw new Error(JSON.stringify(result));
     }
 
-    // TODO(재연): 데이터 정제 로직 필요
-    // _.pick(result,)
     return result.PlaySeqs.Items.map(
         item => _.mapKeys(_.pick(
           item,
