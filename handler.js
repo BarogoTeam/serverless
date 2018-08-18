@@ -57,8 +57,8 @@ module.exports.getScreens = (event, context, callback) => {
     "channelType":"HO",
     "osType":"Firefox",
     "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
-    "playDate":"2018-07-18",
-    "cinemaID":"1|0001|1007,1|0001|1013", //NOTE(재연): UI상으로는 2개까지 제한이지만 API로는 무제한
+    "playDate":event.queryStringParameters.alarmDate,
+    "cinemaID":event.queryStringParameters.cinemaIds, //NOTE(재연): UI상으로는 2개까지 제한이지만 API로는 무제한
     "representationMovieCode":""
   }));
 
@@ -89,6 +89,10 @@ module.exports.getScreens = (event, context, callback) => {
       body: JSON.stringify(body),
     })
   ).catch(e => {
-    console.error("Error on getScreens", e);
+    console.error("Error on getScreens", JSON.stringify(e));
+    callback(null, {
+      statusCode: 502,
+      body: JSON.stringify(e),
+    })
   })
 };
