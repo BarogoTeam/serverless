@@ -42,6 +42,10 @@ module.exports.getCinemas = (event, context, callback) => {
   }).then(body =>
     callback(null, {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(body),
     })
   ).catch(e => {
@@ -86,12 +90,20 @@ module.exports.getScreens = (event, context, callback) => {
   }).then(body =>
     callback(null, {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(body),
     })
   ).catch(e => {
     console.error("Error on getScreens", JSON.stringify(e));
     callback(null, {
       statusCode: 502,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(e),
     })
   })
