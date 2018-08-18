@@ -1,3 +1,11 @@
+# 사용자용
+
+## API관련 문서
+Swagger 참고
+http://zupzup-serverless-finch.s3-website.ap-northeast-2.amazonaws.com/
+
+
+# 개발자용
 ## 역할
 1. RESTful API with AWS Lambda via Serverless
 2. Full Documentation with OpenAPI
