@@ -15,6 +15,6 @@ module.exports = {
       "trailingComma": "es5"
     }],
     "import/no-extraneous-dependencies": 1,
-    "import/prefer-default-export": 0,
+    "import/prefer-default-export": 1,
   }
 }
