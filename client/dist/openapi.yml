@@ -60,6 +60,26 @@ components:
         movieImage:
           type: string
           example: http://caching.lottecinema.co.kr//Media/MovieFile/MovieImg/201808/12963_103_1.jpg
+    AlarmModel:
+      type: object
+      properties:
+        movieId:
+          type: integer
+          example: 12963
+        alarmDate:
+          type: string
+          example: '2020-02-20'
+        startTime:
+          type: string
+          example: '24:50'
+        endTime:
+          type: string
+          example: '27:21'
+        seatNoList:
+          type: array
+          items:
+            type: string
+            example: "1B03"
     ErrorResponse:
       description: '[WIP]'
       type: object
@@ -87,17 +107,45 @@ paths:
       tags:
         - 인증
       operationId: signIn
-      summary: 로그인하여 토큰을 발급합니다.
-      description: 로그인하여 토큰을 발급합니다.
+      summary: '[WIP] 로그인하여 토큰을 발급합니다.'
+      description: '[WIP] 로그인하여 토큰을 발급합니다.'
       parameters: []
       responses:
-        '200':
+        '201':
           description: JWT 토큰
           content:
             text/plain:
               schema:
                 type: string
                 example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidXNlcmlkIiwiaWF0IjoxNTM0Njk3MzQ0LCJleHAiOjE1MzQ3ODM3NDR9.d1wTlMMJM1I89kCZeS9GhbbAlwehpGHiLcV0bCyFqkk'
+  /signUp:
+    post:
+      tags:
+        - 인증
+      operationId: signIn
+      summary: '[WIP] 가입하여 유저를 생성합니다.'
+      description: '[WIP] 가입하여 유저를 생성합니다.'
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: user
+          description: 생성될 유저
+          schema:
+            type: object
+            required:
+              - email
+            properties:
+              email:
+                type: string
+              password:
+                type: string
+
+      responses:
+        '201':
+          description: 생성됨
+
+
   /cinemas:
     get:
       tags:
@@ -168,7 +216,6 @@ paths:
               schema:
                 $ref: '#/components/schemas/MovieModel'
 
-
   /alarms:
     get:
       security:
@@ -187,6 +234,19 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/AlarmModel'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - 알람
+      operationId: getAlarms
+      summary: '[WIP] 로그인된 유저의 알람을 등록합니다.'
+      description: '[WIP] 로그인된 유저의 알람을 등록합니다.'
+      responses:
+        '200':
+          description: 생성됨
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
