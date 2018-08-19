@@ -1,6 +1,7 @@
 import axios from 'axios';
 import FormData from 'form-data';
 import _ from 'lodash';
+import ServiceUtils from '../utils/ServiceUtils';
 
 require('dotenv').config();
 
@@ -34,9 +35,10 @@ export default class LotteCinemaService {
         _.extend({}, axiosConfig, { headers: formData.getHeaders() })
       )
       .then(response => response.data)
-      .then(result => {
-        if (result.IsOK !== 'true') {
-          throw new Error(JSON.stringify(result));
+      .then(ServiceUtils.toCamelCaseKeys)
+      .then(data => {
+        if (data.isOk !== 'true') {
+          throw new Error(JSON.stringify(data));
         }
         const DivisonCode = [
           '',
@@ -50,16 +52,17 @@ export default class LotteCinemaService {
           '제주',
         ];
         const CinemasArray = [];
-        const parserData = result.Cinemas.Cinemas.Items;
+        const parserData = data.cinemas.cinemas.items;
 
+        // TODO(재연): 밑에 코드 eslint 조건에 맞게 수정 필요
         /* eslint-disable */
-        for (const c in result.Cinemas.Cinemas.Items) {
+        for (const c in data.cinemas.cinemas.items) {
           const newCinemas = {
-            divisionCode: parserData[c].DivisionCode,
-            detailDivisionCode: parserData[c].DetailDivisionCode,
-            cinemaid: parserData[c].CinemaID,
-            regionName: DivisonCode[parserData[c].DetailDivisionCode * 1],
-            cinemaName: parserData[c].CinemaNameKR,
+            divisionCode: parserData[c].divisionCode,
+            detailDivisionCode: parserData[c].detailDivisionCode,
+            cinemaid: parserData[c].cinemaId,
+            regionName: DivisonCode[parserData[c].detailDivisionCode * 1],
+            cinemaName: parserData[c].cinemaNameKr,
           };
           CinemasArray.push(newCinemas);
         }
@@ -81,16 +84,17 @@ export default class LotteCinemaService {
 
     return axios.post('http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx', formData, _.extend({}, axiosConfig, { headers: formData.getHeaders() }))
       .then(response => response.data)
-      .then(result => {
-      if (result.IsOK !== 'true') {
-        throw new Error(JSON.stringify(result));
-      }
+      .then(ServiceUtils.toCamelCaseKeys)
+      .then(data => {
+        if (data.isOk !== 'true') {
+          throw new Error(JSON.stringify(data));
+        }
 
-      return result.PlaySeqs.Items.map(
-          item => _.mapKeys(_.pick(
+        return data.playSeqs.items.map(
+          item => _.pick(
             item,
-            ['ScreenID','MovieCode','StartTime','EndTime','TotalSeatCount','BookingSeatCount']
-          ), (value, key) => _.camelCase(key))
+            ['screenId','movieCode','startTime','endTime','totalSeatCount','bookingSeatCount']
+          )
         )
     })
   }
