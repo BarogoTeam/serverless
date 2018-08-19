@@ -110,6 +110,6 @@ $ npm test
 
 3. 배포
     ```
-    serverless client deploy # 또는 npm run deploy:openapi
+    npm run deploy:openapi
     ```
 
