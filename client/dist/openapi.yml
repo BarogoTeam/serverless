@@ -72,7 +72,7 @@ components:
             type: string
   responses:
     UnauthorizedError:
-      description: '[WIP] Access token is missing or invalid'
+      description: '[WIP] 토큰이 없거나 만료되었습니다.'
   securitySchemes:
     bearerAuth:            # arbitrary name for the security scheme
       type: http
@@ -123,14 +123,14 @@ paths:
       summary: 상영관 목록을 받아옵니다.
       description: 상영관 목록을 받아옵니다.
       parameters:
-        - in : query
+        - in: query
           name: cinemaIds
           schema:
             type: string
           required: true
           description : 시네마 아이디 리스트
           example : 1|0001|1007,1|0001|1013
-        - in : query
+        - in: query
           name: alarmDate
           schema:
             type: string
@@ -144,6 +144,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ScreenModel'
+
   /movies/{movieId}:
     get:
       tags:
@@ -152,7 +153,7 @@ paths:
       summary: 영화에 대한 정보를 가져옵니다.
       description: 영화에 대한 정보를 가져옵니다.
       parameters:
-        - in : path
+        - in: path
           name: movieId
           schema:
             type: integer
@@ -166,4 +167,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/MovieModel'
+
+
+  /alarms:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - 알람
+      operationId: getAlarms
+      summary: 등록된 알람을 가져옵니다.
+      description: 등록된 알람을 가져옵니다.
+      parameters:
+        - in: path
+          name: movieId
+          schema:
+            type: integer
+          required: true
+          description : 영화 아이디
+          example : 12963
+      responses:
+        '200':
+          description: 영화정보
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieModel'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
 
