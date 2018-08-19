@@ -118,8 +118,6 @@ export default class LotteCinemaService {
         if (data.isOk !== 'true') {
           throw new Error(JSON.stringify(data));
         }
-        console.log(data)
-
         return _.pick(
           data.movie,
           ['movieNameKr', 'posterUrl']
