@@ -4,12 +4,12 @@ info:
   description: This is ZUPZUP Backend API
   version: '1'
 servers:
-  - url: http://localhost:4000/
-    description: LOCAL SERVER
   - url: https://etrn16p7n7.execute-api.ap-northeast-2.amazonaws.com/dev/
     description: AWS LABMDA DEVELOPMENT
   - url: https://etrn16p7n7.execute-api.ap-northeast-2.amazonaws.com/prod/
     description: AWS LABMDA PRODUCTION
+  - url: http://localhost:4000/
+    description: LOCAL SERVER
 components:
   schemas:
     CinemaModel:
