@@ -1,6 +1,6 @@
 import LotteCinemaService from '../../services/LotteCinemaService';
 
-export const getCinemas = (event, context, callback) => {
+export default (event, context, callback) => {
   LotteCinemaService.getCinemas()
     .then(body =>
       callback(null, {

@@ -1,8 +1,12 @@
+import _ from 'lodash';
+import moment from 'moment';
+
 import LotteCinemaService from '../../services/LotteCinemaService';
 
-export const getScreens = (event, context, callback) => {
+export default (event, context, callback) => {
   LotteCinemaService.getScreens(
-    event.queryStringParameters.alarmDate,
+    _.get(event, 'queryStringParameters.alarmDate') ||
+      moment().format('YYYY-MM-DD'),
     event.queryStringParameters.cinemaIds
   )
     .then(body =>

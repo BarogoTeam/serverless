@@ -78,7 +78,7 @@ export default class LotteCinemaService {
       "osType":"Firefox",
       "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
       "playDate":alarmDate,
-      "cinemaID":cinemaIds, //NOTE(재연): UI상으로는 2개까지 제한이지만 API로는 무제한
+      "cinemaID":cinemaIds,
       "representationMovieCode":""
     }));
 

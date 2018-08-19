@@ -1,10 +1,58 @@
 openapi: 3.0.0
+info:
+  title: ZUPZUP API
+  description: This is ZUPZUP Backend API
+  version: '1'
 servers:
+  - url: http://localhost:4000/
+    description: LOCAL SERVER
   - url: https://etrn16p7n7.execute-api.ap-northeast-2.amazonaws.com/dev/
-    description: AWS LABMDA
+    description: AWS LABMDA DEVELOPMENT
+  - url: https://etrn16p7n7.execute-api.ap-northeast-2.amazonaws.com/prod/
+    description: AWS LABMDA PRODUCTION
 components:
   schemas:
+    CinemaModel:
+      type: object
+      properties:
+        cinemaId:
+          type: integer
+          example: 1013
+        divisionCode:
+          type: integer
+          example: 1
+        detailDivisionCode:
+          type: string
+          example: '0001'
+        regionName:
+          type: string
+          example: '서울'
+        cinemaName:
+          type: string
+          example: '가산디지털'
+    ScreenModel:
+      type: object
+      properties:
+        screenId:
+          type: integer
+          example: 100702
+        movieCode:
+          type: integer
+          example: 12963
+        startTime:
+          type: string
+          example: '24:50'
+        endTime:
+          type: string
+          example: '27:21'
+        totalSeatCount:
+          type: integer
+          example: 165
+        bookingSeatCount:
+          type: integer
+          example: 161
     ErrorResponse:
+      description: "Not Yet Implemented"
       type: object
       properties:
         code:
@@ -13,22 +61,7 @@ components:
           type: array
           items:
             type: string
-    CinemasModel:
-      type: array
-      items:
-        type: object
-        properties:
-          id:
-            type: integer
-          regionId:
-            type: integer
-          cinemaName:
-            type: string
   securitySchemes: {}
-info:
-  title: My API
-  description: This is my API
-  version: '1'
 paths:
   /cinemas:
     get:
@@ -42,7 +75,9 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CinemasModel'
+                type: array
+                items:
+                  $ref: '#/components/schemas/CinemaModel'
   /screens:
     get:
       operationId: getScreens
@@ -52,19 +87,21 @@ paths:
         - in : query
           name: cinemaIds
           schema:
-            type: String
-          # required: true
-          description : 시네마 아이디 리스트. 예) 1|0001|1007,1|0001|1013
+            type: string
+          required: true
+          description : 시네마 아이디 리스트
+          example : 1|0001|1007,1|0001|1013
         - in : query
           name: alarmDate
           schema:
-            type: String
-          # required: true
-          description : YYYY-MM-DD 형식으로 표현된 상영일자
+            type: string
+          description : YYYY-MM-DD 형식으로 표현된 상영일자. *(기본값, 오늘)*
       responses:
         '201':
           description: 시네마 리스트
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CinemasModel'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ScreenModel'
