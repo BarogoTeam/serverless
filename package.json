@@ -13,7 +13,7 @@
     "deploy:func:prod": "sls deploy function --stage prod --verbose",
     "deploy": "sls deploy --verbose",
     "deploy:prod": "sls deploy --stage prod --verbose",
-    "deploy:openapi": "serverless client deploy",
+    "deploy:openapi": "serverless client deploy --no-confirm",
     "lint": "eslint './src/**/*.js' './__tests__/**/*.js'",
     "test": "jest"
   },
