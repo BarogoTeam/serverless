@@ -91,6 +91,18 @@ functions:
           method: get
           cors: ${self:custom.cors, "true"}
 
+  getMovie:
+    handler: src/functions/resources/handler.getMovie
+    events:
+      - http:
+          path: movies/{id}
+          method: get
+          cors: ${self:custom.cors, "true"}
+          request:
+            parameters:
+              paths:
+                id: true
+
   getAlarms:
     handler: src/functions/alarms/handler.getAlarms
     events:

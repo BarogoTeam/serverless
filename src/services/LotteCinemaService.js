@@ -98,4 +98,32 @@ export default class LotteCinemaService {
         )
     })
   }
+
+  static getMovie(movieCode) {
+    const formData = new FormData();
+    formData.append('paramList', JSON.stringify({
+      "MethodName":"GetMovieDetail",
+      "channelType":"HO",
+      "osType":"Firefox",
+      "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
+      "multiLanguageID":"EN",
+      "representationMovieCode": `${movieCode}`
+    }));
+
+
+    return axios.post('http://www.lottecinema.co.kr/LCWS/Movie/MovieData.aspx', formData, _.extend({}, axiosConfig, { headers: formData.getHeaders() }))
+      .then(response => response.data)
+      .then(ServiceUtils.toCamelCaseKeys)
+      .then(data => {
+        if (data.isOk !== 'true') {
+          throw new Error(JSON.stringify(data));
+        }
+        console.log(data)
+
+        return _.pick(
+          data.movie,
+          ['movieNameKr', 'posterUrl']
+        );
+      })
+  }
 }

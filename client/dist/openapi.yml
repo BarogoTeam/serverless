@@ -36,7 +36,7 @@ components:
         screenId:
           type: integer
           example: 100702
-        movieCode:
+        movieId:
           type: integer
           example: 12963
         startTime:
@@ -51,8 +51,17 @@ components:
         bookingSeatCount:
           type: integer
           example: 161
+    MovieModel:
+      type: object
+      properties:
+        movieName:
+          type: string
+          example: 신과함께-인과 연
+        posterUrl:
+          type: string
+          example: http://caching.lottecinema.co.kr//Media/MovieFile/MovieImg/201808/12963_103_1.jpg
     ErrorResponse:
-      description: "In Experimental"
+      description: Work In Progress
       type: object
       properties:
         code:
@@ -105,3 +114,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ScreenModel'
+  /movies/{movieId}:
+    get:
+      operationId: getMovie
+      summary: 영화에 대한 정보를 가져옵니다.
+      description: 영화에 대한 정보를 가져옵니다.
+      parameters:
+        - in : path
+          name: movieId
+          schema:
+            type: integer
+          required: true
+          description : 영화 아이디
+          example : 12963
+      responses:
+        '200':
+          description: 영화정보
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MovieModel'
+
