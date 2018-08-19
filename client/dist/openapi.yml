@@ -176,8 +176,8 @@ paths:
       tags:
         - 알람
       operationId: getAlarms
-      summary: 등록된 알람을 가져옵니다.
-      description: 등록된 알람을 가져옵니다.
+      summary: '[WIP] 로그인된 유저의 등록된 알람을 가져옵니다.'
+      description: '[WIP] 로그인된 유저의 등록된 알람을 가져옵니다.'
       parameters:
         - in: path
           name: movieId
