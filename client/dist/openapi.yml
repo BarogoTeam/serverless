@@ -61,7 +61,7 @@ components:
           type: string
           example: http://caching.lottecinema.co.kr//Media/MovieFile/MovieImg/201808/12963_103_1.jpg
     ErrorResponse:
-      description: Work In Progress
+      description: '[WIP]'
       type: object
       properties:
         code:
@@ -70,10 +70,38 @@ components:
           type: array
           items:
             type: string
-  securitySchemes: {}
+  responses:
+    UnauthorizedError:
+      description: '[WIP] Access token is missing or invalid'
+  securitySchemes:
+    bearerAuth:            # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+      bearerFormat: JWT    # optional, arbitrary value for documentation purposes
+security:
+  - BearerAuth: []
+
 paths:
+  /signIn:
+    post:
+      tags:
+        - 인증
+      operationId: signIn
+      summary: 로그인하여 토큰을 발급합니다.
+      description: 로그인하여 토큰을 발급합니다.
+      parameters: []
+      responses:
+        '200':
+          description: JWT 토큰
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: pong
   /cinemas:
     get:
+      tags:
+        - 영화관
       operationId: getCinemas
       summary: 영화관 목록을 받아옵니다.
       description: 영화관 목록을 받아옵니다.
@@ -89,6 +117,8 @@ paths:
                   $ref: '#/components/schemas/CinemaModel'
   /screens:
     get:
+      tags:
+        - 영화관
       operationId: getScreens
       summary: 상영관 목록을 받아옵니다.
       description: 상영관 목록을 받아옵니다.
@@ -116,6 +146,8 @@ paths:
                   $ref: '#/components/schemas/ScreenModel'
   /movies/{movieId}:
     get:
+      tags:
+        - 영화관
       operationId: getMovie
       summary: 영화에 대한 정보를 가져옵니다.
       description: 영화에 대한 정보를 가져옵니다.
