@@ -57,7 +57,7 @@ components:
         movieName:
           type: string
           example: 신과함께-인과 연
-        posterUrl:
+        movieImage:
           type: string
           example: http://caching.lottecinema.co.kr//Media/MovieFile/MovieImg/201808/12963_103_1.jpg
     ErrorResponse:
