@@ -52,7 +52,7 @@ components:
           type: integer
           example: 161
     ErrorResponse:
-      description: "Not Yet Implemented"
+      description: "In Experimental"
       type: object
       properties:
         code:
