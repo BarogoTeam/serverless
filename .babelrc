@@ -1,0 +1,28 @@
+{
+  "plugins": [
+    "transform-runtime",
+    "transform-strict-mode",
+    "babel-plugin-source-map-support"
+  ],
+  "presets": [
+    ["env", {
+      "targets": {
+        "node": "current",
+        "uglify": true
+      },
+      "modules": false
+    }]
+  ],
+  "env": {
+    "test": {
+      "presets": [
+        ["env", {
+          "targets": {
+            "node": "current",
+            "uglify": true
+          }
+        }]
+      ]
+    }
+  }
+}

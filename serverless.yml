@@ -1,34 +1,3 @@
-service: zupzup
-
-provider:
-  name: aws
-  runtime: nodejs8.10
-  region: ap-northeast-2
-
-functions:
-  getCinemas:
-    handler: handler.getCinemas
-    events:
-      - http:
-          path: cinemas
-          method: get
-          cors: true
-
-  getScreens:
-    handler: handler.getScreens
-    events:
-      - http:
-          path: screens
-          method: get
-          cors: true
-
-plugins:
-  - serverless-finch
-
-custom:
-  client:
-    bucketName: zupzup-serverless-finch
-
 # Welcome to Serverless!
 #
 # This file is the main config file for your service.
@@ -42,14 +11,44 @@ custom:
 #
 # Happy Coding!
 
+service: zupzup
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
-# frameworkVersion: "=X.X.X"
+frameworkVersion: ">=1.10.0 <2.0.0"
+
+plugins:
+  - serverless-webpack
+  - serverless-offline
+  - serverless-finch
+
+custom:
+  defaultStage: dev
+  webpack: webpack/${self:provider.stage}.config.js
+  webpackIncludeModules: true
+  serverless-offline: ${file(./env.yml):serverless-offline}
+  cors:
+    origins:
+      - '*'
+    headers:
+      - Content-Type
+      - X-Amz-Date
+      - Authorization
+      - X-Api-Key
+      - X-Amz-Security-Token
+      - X-Requested-With
+      - X-Requested-By
+    allowCredentials: false
+  client:
+    bucketName: zupzup-serverless-finch
+
+provider:
+  name: aws
+  runtime: nodejs8.10
 
 # you can overwrite defaults here
-#  stage: dev
-#  region: us-east-1
+  stage: ${opt:stage, self:custom.defaultStage}
+  region: ap-northeast-2
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -68,19 +67,45 @@ custom:
 #            - "/*"
 
 # you can define service wide environment variables here
-#  environment:
-#    variable1: value1
+  environment:
+    NODE_ENV: ${self:provider.stage}
 
 # you can add packaging information here
-#package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
-#  exclude:
-#    - exclude-me.js
-#    - exclude-me-dir/**
+package:
+  individual: true
 
+functions:
+  getCinemas:
+    handler: src/functions/resources/handler.getCinemas # TODO(재연): resource보다는 나은이름 찾기
+    events:
+      - http:
+          path: cinemas
+          method: get
+          cors: ${self:custom.cors, "true"}
 
+  getScreens:
+    handler: src/functions/resources/handler.getScreens
+    events:
+      - http:
+          path: screens
+          method: get
+          cors: ${self:custom.cors, "true"}
+
+  getAlarms:
+    handler: src/functions/alarms/handler.getAlarms
+    events:
+      - http:
+          path: alarms
+          method: get
+          cors: ${self:custom.cors, "true"}
+
+  postAlarms:
+    handler: src/functions/alarms/handler.postAlarms
+    events:
+      - http:
+          path: alarms
+          method: post
+          cors: ${self:custom.cors, "true"}
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -94,7 +119,6 @@ custom:
 #      - sns: greeter-topic
 #      - stream: arn:aws:dynamodb:region:XXXXXX:table/foo/stream/1970-01-01T00:00:00.000
 #      - alexaSkill
-#      - alexaSmartHome: amzn1.ask.skill.xx-xx-xx-xx
 #      - iot:
 #          sql: "SELECT * FROM 'some_topic'"
 #      - cloudwatchEvent:

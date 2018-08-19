@@ -1,14 +1,13 @@
-# 사용자용
+# 백엔드
+
+## 역할
+1. RESTful API with AWS Lambda via Serverless
+2. Full Documentation with OpenAPI
 
 ## API관련 문서
 Swagger 참고
 http://zupzup-serverless-finch.s3-website.ap-northeast-2.amazonaws.com/
 
-
-# 개발자용
-## 역할
-1. RESTful API with AWS Lambda via Serverless
-2. Full Documentation with OpenAPI
 
 ## 사전준비
 
@@ -25,12 +24,83 @@ npm install serverless --global # 또는 npm i serverless -g
 
 ## Lambda 를 수정하고 반영하는 방법
 
-1. serverless.yml 수정 및 관련 js 코드 수정
+### Installation
 
-2. 배포
-    ```
-    serverless deploy # 또는 npm run deploy-lambda
-    ```
+Download or clone this repo, then install Node.js using [nvm](https://github.com/creationix/nvm "creationix/nvm: Node Version Manager - Simple bash script to manage multiple active node.js versions").
+
+```bash
+$ cd to/this/dir
+$ nvm install
+$ nvm use
+```
+
+Install package.
+
+```bash
+$ npm install # or shortly npm i
+```
+
+### Run locally
+
+```bash
+$ npm start
+```
+
+Open the URL shown in your browser.
+
+### Build
+
+#### Development
+
+```bash
+$ npm run build
+```
+
+#### Production
+
+```bash
+$ npm run build:prod
+```
+
+### Deploy
+
+#### Development
+
+```bash
+$ npm run deploy
+```
+
+#### Production
+
+```bash
+$ npm run deploy:prod
+```
+
+### Deploy Function
+
+#### Development
+
+```bash
+$ npm run deploy:func -- --function functionName
+```
+
+#### Production
+
+```bash
+$ npm run deploy:func:prod -- --function functionName
+```
+
+### Lint
+
+```bash
+$ npm run lint
+```
+
+### Test
+
+```bash
+$ npm test
+```
 
 ## OpenAPI 를 수정하고 반영하는 방법
 
@@ -40,5 +110,6 @@ npm install serverless --global # 또는 npm i serverless -g
 
 3. 배포
     ```
-    serverless client deploy # 또는 npm run deploy-openapi
+    serverless client deploy # 또는 npm run deploy:openapi
     ```
+
