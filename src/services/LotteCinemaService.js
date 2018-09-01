@@ -7,10 +7,11 @@ require('dotenv').config();
 
 const axiosConfig = {
   timeout: 1000,
-  // proxy: {
-  //   host: process.env.PROXY_HOST,
-  //   port: process.env.PROXY_PORT,
-  // },
+  responseType: 'json',
+  proxy: {
+    host: process.env.PROXY_HOST,
+    port: process.env.PROXY_PORT,
+  },
 };
 
 export default class LotteCinemaService {
@@ -34,7 +35,10 @@ export default class LotteCinemaService {
         formData,
         _.extend({}, axiosConfig, { headers: formData.getHeaders() })
       )
-      .then(response => response.data)
+      .then(
+        response =>
+          _.isString(response.data) ? JSON.parse(response.data) : response.data
+      )
       .then(ServiceUtils.toCamelCaseKeys)
       .then(data => {
         if (data.isOk !== 'true') {
