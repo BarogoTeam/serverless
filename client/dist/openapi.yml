@@ -80,6 +80,15 @@ components:
           items:
             type: string
             example: "1B03"
+    UserModel:
+      type: object
+      properties:
+        email:
+          type: string
+          example: example@example.com
+        password:
+          type: string
+          example: examplepassword
     ErrorResponse:
       description: '[WIP]'
       type: object
@@ -127,20 +136,13 @@ paths:
       description: '[WIP] 가입하여 유저를 생성합니다.'
       consumes:
         - application/json
-      parameters:
-        - in: body
-          name: user
-          description: 생성될 유저
-          schema:
-            type: object
-            required:
-              - email
-            properties:
-              email:
-                type: string
-              password:
-                type: string
-
+      requestBody:
+        description: User Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserModel'
       responses:
         '201':
           description: 생성됨
@@ -241,9 +243,16 @@ paths:
         - bearerAuth: []
       tags:
         - 알람
-      operationId: getAlarms
+      operationId: postAlarms
       summary: '[WIP] 로그인된 유저의 알람을 등록합니다.'
       description: '[WIP] 로그인된 유저의 알람을 등록합니다.'
+      requestBody:
+        description: Alarm Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AlarmModel'
       responses:
         '200':
           description: 생성됨

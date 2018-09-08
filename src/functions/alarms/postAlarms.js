@@ -1,5 +1,10 @@
+import DatabaseUtils from '../../utils/DatabaseUtils';
+
 export default async (event, context, callback) => {
-  const response = new Promise(resolve =>
+  const response = new Promise(resolve => {
+    DatabaseUtils.connectMongoDB().then(db =>
+      db.collection('alarms').insertOne(JSON.parse(event.body))
+    );
     resolve({
       statusCode: 200,
       headers: {
@@ -7,13 +12,10 @@ export default async (event, context, callback) => {
         'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
       },
       body: JSON.stringify({
-        message: `Go Serverless v1.0! Your function executed successfully! ${
-          process.env.NODE_ENV
-        } stage! Second module!`,
-        input: event,
+        message: 'Created',
       }),
-    })
-  );
+    });
+  });
 
   callback(null, await response);
 

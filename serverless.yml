@@ -85,6 +85,13 @@ functions:
           path: signIn
           method: post
           cors: ${self:custom.cors, "true"}
+  signUp:
+    handler: src/functions/auth/handler.signUp
+    events:
+      - http:
+          path: signUp
+          method: post
+          cors: ${self:custom.cors, "true"}
 
   getCinemas:
     handler: src/functions/resources/handler.getCinemas # TODO(재연): resource보다는 나은이름 찾기
