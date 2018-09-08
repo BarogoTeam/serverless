@@ -59,8 +59,8 @@
   },
   "lint-staged": {
     "{src,__tests__,webpack}/**/*.js": [
-      "yarn lint -- --fix",
-      "yarn test",
+      "npm run lint -- --fix",
+      "npm test",
       "git add"
     ]
   }

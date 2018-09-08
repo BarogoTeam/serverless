@@ -69,7 +69,7 @@ provider:
 # you can define service wide environment variables here
   environment:
     NODE_ENV: ${self:provider.stage}
-    MONGODB: mongodb://barogo:barogo!!!!@ds229450.mlab.com:29450/zupzup
+    MONGODB: mongodb://barogo:barogo123!@ds263380.mlab.com:63380/zupzup
     PROXY_HOST: 203.217.204.135
     PROXY_PORT: 80
 
