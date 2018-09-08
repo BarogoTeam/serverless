@@ -118,7 +118,15 @@ paths:
       operationId: signIn
       summary: '[WIP] 로그인하여 토큰을 발급합니다.'
       description: '[WIP] 로그인하여 토큰을 발급합니다.'
-      parameters: []
+      consumes:
+        - application/json
+      requestBody:
+        description: User Object
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserModel'
       responses:
         '201':
           description: JWT 토큰
@@ -127,6 +135,13 @@ paths:
               schema:
                 type: string
                 example: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJkYXRhIjoidXNlcmlkIiwiaWF0IjoxNTM0Njk3MzQ0LCJleHAiOjE1MzQ3ODM3NDR9.d1wTlMMJM1I89kCZeS9GhbbAlwehpGHiLcV0bCyFqkk'
+        '400':
+          description: 로그인 실패
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: 'Failed to authenticate'
   /signUp:
     post:
       tags:
