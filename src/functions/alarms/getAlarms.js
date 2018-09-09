@@ -1,6 +1,7 @@
 import DatabaseUtils from '../../utils/DatabaseUtils';
 
 export default async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
   const response = new Promise(resolve =>
     DatabaseUtils.connectMongoDB()
       .then(db =>
@@ -22,7 +23,4 @@ export default async (event, context, callback) => {
   );
 
   callback(null, await response);
-
-  // Use this code if you don't use the http event with the LAMBDA-PROXY integration
-  // callback(null, { message: 'Go Serverless v1.0! Your function executed successfully!', event });
 };

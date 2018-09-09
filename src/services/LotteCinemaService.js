@@ -3,8 +3,6 @@ import FormData from 'form-data';
 import _ from 'lodash';
 import ServiceUtils from '../utils/ServiceUtils';
 
-require('dotenv').config();
-
 const axiosConfig = {
   timeout: 1000,
   responseType: 'json',

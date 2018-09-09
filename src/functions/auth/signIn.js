@@ -2,6 +2,8 @@ import jwt from 'jsonwebtoken';
 import DatabaseUtils from '../../utils/DatabaseUtils';
 
 export default async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
   const response = new Promise(resolve => {
     DatabaseUtils.connectMongoDB().then(db => {
       const user = JSON.parse(event.body);

@@ -16,5 +16,6 @@ module.exports = {
     }],
     "import/no-extraneous-dependencies": 1,
     "import/prefer-default-export": 1,
+    "no-param-reassign": 0,
   }
 }

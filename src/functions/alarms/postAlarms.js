@@ -1,6 +1,8 @@
 import DatabaseUtils from '../../utils/DatabaseUtils';
 
 export default async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
   const response = new Promise(resolve => {
     DatabaseUtils.connectMongoDB().then(db =>
       db.collection('alarms').insertOne(JSON.parse(event.body))
