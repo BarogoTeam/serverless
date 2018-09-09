@@ -128,7 +128,7 @@ paths:
             schema:
               $ref: '#/components/schemas/UserModel'
       responses:
-        '201':
+        '200':
           description: JWT 토큰
           content:
             text/plain:

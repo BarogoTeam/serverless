@@ -17,7 +17,7 @@ export default async (event, context, callback) => {
         .then(cnt => {
           if (cnt) {
             resolve({
-              statusCode: 201,
+              statusCode: 200,
               headers: {
                 'Access-Control-Allow-Origin': '*',
                 'Access-Control-Allow-Credentials': true,
