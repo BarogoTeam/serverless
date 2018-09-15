@@ -1,13 +1,20 @@
+import jwt from 'jsonwebtoken';
 import DatabaseUtils from '../../utils/DatabaseUtils';
 
 export default async (event, context, callback) => {
   context.callbackWaitsForEmptyEventLoop = false;
+  const token = event.headers.Authorization.split(' ')[1]; // TODO: 재연이가 고쳐줄것임
+  const email = jwt.verify(token, 'secret').data;
+  const query = {
+    email,
+  };
+
   const response = new Promise(resolve =>
     DatabaseUtils.connectMongoDB()
       .then(db =>
         db
           .collection('alarms')
-          .find()
+          .find(query)
           .toArray()
       )
       .then(alarms => {
