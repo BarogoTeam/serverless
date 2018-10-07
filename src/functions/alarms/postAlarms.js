@@ -21,22 +21,35 @@ export default async (event, context, callback) => {
 
   const token = event.headers.Authorization.split(' ')[1];
   const alarm = JSON.parse(event.body);
-  alarm.email = jwt.verify(token, 'secret').data; // TODO: jwt가 valid하지 않은 경우 처리
 
   const response = new Promise(resolve => {
-    DatabaseUtils.connectMongoDB().then(db =>
-      db.collection('alarms').insertOne(alarm)
-    );
-    resolve({
-      statusCode: 200,
-      headers: {
-        'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-        'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
-      },
-      body: JSON.stringify({
-        message: 'Created',
-      }),
-    });
+    try {
+      alarm.email = jwt.verify(token, 'secret').data; // TODO: jwt가 valid하지 않은 경우 처리
+      DatabaseUtils.connectMongoDB().then(db =>
+        db.collection('alarms').insertOne(alarm)
+      );
+      resolve({
+        statusCode: 200,
+        headers: {
+          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+          'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
+        },
+        body: JSON.stringify({
+          message: 'Created',
+        }),
+      });
+    } catch (e) {
+      resolve({
+        statusCode: 401,
+        headers: {
+          'Access-Control-Allow-Origin': '*', // Required for CORS support to work
+          'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
+        },
+        body: JSON.stringify({
+          errorMessage: e.message,
+        }),
+      });
+    }
   });
 
   return callback(null, await response);
