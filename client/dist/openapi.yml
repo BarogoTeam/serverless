@@ -89,6 +89,25 @@ components:
         password:
           type: string
           example: examplepassword
+    SeatModel:
+      type: object
+      properties:
+        SeatXCoordinate:
+          type: integer
+          example: 1234
+        SeatYCoordinate:
+          type: integer
+          example: 4321
+        SeatXLength:
+          type: integer
+          example: 123
+        SeatYLength:
+          type: integer
+          example: 321
+        SeatNo:
+          type: string
+          example: "1A01"
+
     ErrorResponse:
       description: '[WIP]'
       type: object
@@ -236,9 +255,9 @@ paths:
   /alarms:
     get:
       security:
-        - bearerAuth: []
+      - bearerAuth: []
       tags:
-        - 알람
+      - 알람
       operationId: getAlarms
       summary: '로그인된 유저의 등록된 알람을 가져옵니다.'
       description: '로그인된 유저의 등록된 알람을 가져옵니다.'
@@ -255,9 +274,9 @@ paths:
           $ref: '#/components/responses/UnauthorizedError'
     post:
       security:
-        - bearerAuth: []
+      - bearerAuth: []
       tags:
-        - 알람
+      - 알람
       operationId: postAlarms
       summary: '로그인된 유저의 알람을 등록합니다.'
       description: '로그인된 유저의 알람을 등록합니다.'
@@ -274,3 +293,23 @@ paths:
         '401':
           $ref: '#/components/responses/UnauthorizedError'
 
+  /seats:
+    get:
+      security:
+      - bearerAuth: []
+      tags:
+      - 영화관
+      operationId: getSeats
+      summary: '선택된 영화관의 좌석 정보를 가져옵니다.'
+      description: '선택된 영화관의 좌석 정보를 가져옵니다.'
+      responses:
+        '200':
+          description: 알람 리스트
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/seatModal'
+        '401':
+          $ref: '#/components/responses/UnauthorizedError'
