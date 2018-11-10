@@ -309,7 +309,7 @@ paths:
             type: string
           required: true
           description : 시네마 아이디
-          example : 1|0001|1007
+          example : 1007
         - in: query
           name: screenId
           schema:
