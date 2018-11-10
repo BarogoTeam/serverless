@@ -302,6 +302,28 @@ paths:
       operationId: getSeats
       summary: '선택된 영화관의 좌석 정보를 가져옵니다.'
       description: '선택된 영화관의 좌석 정보를 가져옵니다.'
+      parameters:
+        - in: query
+          name: cinemaId
+          schema:
+            type: string
+          required: true
+          description : 시네마 아이디
+          example : 1|0001|1007
+        - in: query
+          name: screenId
+          schema:
+            type: string
+          required: true
+          description : 상영관 아이디
+          example: "100702"
+        - in: query
+          name: playDate
+          schema:
+            type: string
+          required: true
+          description : YYYY-MM-DD 형식으로 표현된 상영일자. *(기본값, 오늘)*
+          example: "2018-11-10"
       responses:
         '200':
           description: 알람 리스트

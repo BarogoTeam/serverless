@@ -136,12 +136,6 @@ functions:
           path: seats
           method: get
           cors: ${self:custom.cors, "true"}
-          request:
-            parameters:
-              paths:
-                cinemaId: true,
-                screenId: true,
-                playDate: true
 
   postAlarms:
     handler: src/functions/alarms/handler.postAlarms
