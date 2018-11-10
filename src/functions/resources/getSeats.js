@@ -5,8 +5,8 @@ import LotteCinemaService from '../../services/LotteCinemaService';
 export default (event, context, callback) => {
   LotteCinemaService.getSeats(
     _.get(event, 'queryStringParameters.cinemaId'),
-    event.queryStringParameters.screenId,
-    event.queryStringParameters.playDate
+    _.get(event, 'queryStringParameters.screenId'),
+    _.get(event, 'queryStringParameters.playDate')
   )
     .then(body =>
       callback(null, {

@@ -121,19 +121,19 @@ functions:
               paths:
                 id: true
 
+  getSeats:
+    handler: src/functions/resources/handler.getSeats
+    events:
+      - http:
+          path: seats
+          method: get
+          cors: ${self:custom.cors, "true"}
+
   getAlarms:
     handler: src/functions/alarms/handler.getAlarms
     events:
       - http:
           path: alarms
-          method: get
-          cors: ${self:custom.cors, "true"}
-
-  getSeats:
-    handler: src/functions/alarms/handler.getSeats
-    events:
-      - http:
-          path: seats
           method: get
           cors: ${self:custom.cors, "true"}
 

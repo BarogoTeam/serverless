@@ -111,7 +111,8 @@ export default class LotteCinemaService {
       "cinemaId":cinemaId,
       "screenId":screenId,
       "playDate":playDate,
-      "representationMovieCode":""
+      "playSequence":1,
+      "representationMovieCode":"100"
     }));
 
 
