@@ -4,7 +4,7 @@ import _ from 'lodash';
 import ServiceUtils from '../utils/ServiceUtils';
 
 const axiosConfig = {
-  timeout: 1000,
+  timeout: 5000,
   responseType: 'json',
   proxy: {
     host: process.env.PROXY_HOST,
