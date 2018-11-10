@@ -98,7 +98,38 @@ export default class LotteCinemaService {
             ['screenId','movieCode','startTime','endTime','totalSeatCount','bookingSeatCount']
           )
         )
-    })
+      })
+  }
+
+  static getSeats(cinemaId, screenId, playDate) {
+    const formData = new FormData();
+    formData.append('paramList', JSON.stringify({
+      "MethodName":"GetSeats",
+      "channelType":"HO",
+      "osType":"Firefox",
+      "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
+      "cinemaId":cinemaId,
+      "screenId":screenId,
+      "playDate":playDate,
+      "representationMovieCode":""
+    }));
+
+
+    return axios.post('http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx', formData, _.extend({}, axiosConfig, { headers: formData.getHeaders() }))
+      .then(response => response.data)
+      .then(ServiceUtils.toCamelCaseKeys)
+      .then(data => {
+        if (data.isOk !== 'true') {
+          throw new Error(JSON.stringify(data));
+        }
+
+        return data.seats.items.map(
+          item => _.pick(
+            item,
+            ['seatNo', 'seatXCoordinate', 'seatYCoordinate', 'seatXLength', 'seatYLength']
+          )
+        )
+      })
   }
 
   static getMovie(movieCode) {

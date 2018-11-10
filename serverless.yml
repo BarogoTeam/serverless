@@ -129,6 +129,20 @@ functions:
           method: get
           cors: ${self:custom.cors, "true"}
 
+  getSeats:
+    handler: src/functions/alarms/handler.getSeats
+    events:
+      - http:
+          path: seats
+          method: get
+          cors: ${self:custom.cors, "true"}
+          request:
+            parameters:
+              paths:
+                cinemaId: true,
+                screenId: true,
+                playDate: true
+
   postAlarms:
     handler: src/functions/alarms/handler.postAlarms
     events:

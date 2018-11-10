@@ -310,6 +310,6 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/seatModal'
+                  $ref: '#/components/schemas/SeatModel'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
