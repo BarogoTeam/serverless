@@ -33,6 +33,21 @@ components:
     ScreenModel:
       type: object
       properties:
+        screenDivisionNameKr:
+          type: string
+          example: '일반'
+        filmNameKr:
+          type: string
+          example: '2D'
+        screenNameKr:
+          type: string
+          example: '3관'
+        viewGradeNameKr:
+          type: string
+          example: '12'
+        playSequence:
+          type: integer
+          example: 1
         screenId:
           type: integer
           example: 100702
@@ -219,6 +234,7 @@ paths:
           schema:
             type: string
           description : YYYY-MM-DD 형식으로 표현된 상영일자. *(기본값, 오늘)*
+          example : "2018-11-20"
       responses:
         '200':
           description: 시네마 리스트

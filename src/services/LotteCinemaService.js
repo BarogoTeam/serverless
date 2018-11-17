@@ -95,7 +95,7 @@ export default class LotteCinemaService {
         return data.playSeqs.items.map(
           item => _.pick(
             item,
-            ['screenId','movieCode','startTime','endTime','totalSeatCount','bookingSeatCount']
+            ['screenDivisionNameKr', 'filmNameKr','screenNameKr','viewGradeNameKr','playSequence','screenId','movieCode','startTime','endTime','totalSeatCount','bookingSeatCount']
           )
         )
       })

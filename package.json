@@ -50,6 +50,7 @@
     "axios": "^0.18.0",
     "babel-runtime": "^6.26.0",
     "form-data": "^2.3.2",
+    "git-pair": "^0.1.2",
     "jsonwebtoken": "^8.3.0",
     "lodash": "^4.17.10",
     "moment": "^2.22.2",
