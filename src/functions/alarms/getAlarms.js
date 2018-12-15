@@ -19,13 +19,14 @@ export default async (event, context, callback) => {
     });
   }
   const token = event.headers.Authorization.split(' ')[1];
+  const CRAWLER_ID = 'ZupzupCrawler@zupzup.com';
+
+  const isCrawler = email => email === CRAWLER_ID;
 
   const response = new Promise(resolve => {
     try {
       const email = jwt.verify(token, 'secret').data; // TODO: jwt가 valid하지 않은 경우 처리
-      const query = {
-        email,
-      };
+      const query = isCrawler(email) ? {} : { email };
 
       DatabaseUtils.connectMongoDB()
         .then(db =>
