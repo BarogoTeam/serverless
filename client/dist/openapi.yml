@@ -276,7 +276,7 @@ paths:
       - 알람
       operationId: getAlarms
       summary: '로그인된 유저의 등록된 알람을 가져옵니다.'
-      description: '로그인된 유저의 등록된 알람을 가져옵니다.'
+      description: '로그인된 유저의 등록된 알람을 가져옵니다. 로그인 된 유저의 아이디가 ZupzupCrawler@zupzup.com 라면 전체 알람 리스트를 가져옵니다.'
       responses:
         '200':
           description: 알람 리스트
