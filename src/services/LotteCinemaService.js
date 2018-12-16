@@ -33,9 +33,8 @@ export default class LotteCinemaService {
         formData,
         _.extend({}, axiosConfig, { headers: formData.getHeaders() })
       )
-      .then(
-        response =>
-          _.isString(response.data) ? JSON.parse(response.data) : response.data
+      .then(response =>
+        _.isString(response.data) ? JSON.parse(response.data) : response.data
       )
       .then(ServiceUtils.toCamelCaseKeys)
       .then(data => {
