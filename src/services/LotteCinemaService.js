@@ -13,7 +13,7 @@ const axiosConfig = {
 };
 
 export default class LotteCinemaService {
-  static getCinemas() {
+  static async getCinemas() {
     const formData = new FormData();
     formData.append(
       'paramList',
@@ -27,7 +27,7 @@ export default class LotteCinemaService {
       })
     );
 
-    return axios
+    const data = await axios
       .post(
         'http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx',
         formData,
@@ -36,54 +36,58 @@ export default class LotteCinemaService {
       .then(response =>
         _.isString(response.data) ? JSON.parse(response.data) : response.data
       )
-      .then(ServiceUtils.toCamelCaseKeys)
-      .then(data => {
-        if (data.isOk !== 'true') {
-          throw new Error(JSON.stringify(data));
-        }
-        const DivisonCode = [
-          '',
-          '서울',
-          '경기/인천',
-          '충청/대전',
-          '전라/광주',
-          '경북/대구',
-          '경남/부산/울산',
-          '강원',
-          '제주',
-        ];
-        const CinemasArray = [];
-        const parserData = data.cinemas.cinemas.items;
+      .then(ServiceUtils.toCamelCaseKeys);
 
-        // TODO(재연): 밑에 코드 eslint 조건에 맞게 수정 필요
-        /* eslint-disable */
-        for (const c in data.cinemas.cinemas.items) {
-          const newCinemas = {
-            divisionCode: parserData[c].divisionCode,
-            detailDivisionCode: parserData[c].detailDivisionCode,
-            cinemaid: parserData[c].cinemaId,
-            regionName: DivisonCode[parserData[c].detailDivisionCode * 1],
-            cinemaName: parserData[c].cinemaNameKr,
-          };
-          CinemasArray.push(newCinemas);
+    if (data.isOk !== 'true') {
+      throw new Error(JSON.stringify(data));
+    }
+
+    const DIVISION_CODES = [
+      '',
+      '서울',
+      '경기/인천',
+      '충청/대전',
+      '전라/광주',
+      '경북/대구',
+      '경남/부산/울산',
+      '강원',
+      '제주',
+    ];
+
+    return _.map(data.cinemas.cinemas.items, cinema =>
+      _.assign(
+        {},
+        _.pick(cinema, ['divisionCode', 'detailDivisionCode', 'cinemaId']),
+        {
+          regionName: DIVISION_CODES[_.toInteger(cinema.detailDivisionCode)],
+          cinemaName: cinema.cinemaNameKr,
         }
-        return CinemasArray;
-      });
+      )
+    );
   }
 
   static getScreens(alarmDate, cinemaIds) {
     const formData = new FormData();
-    formData.append('paramList', JSON.stringify({
-      "MethodName":"GetPlaySequence",
-      "channelType":"HO",
-      "osType":"Firefox",
-      "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
-      "playDate":alarmDate,
-      "cinemaID":cinemaIds,
-      "representationMovieCode":""
-    }));
+    formData.append(
+      'paramList',
+      JSON.stringify({
+        MethodName: 'GetPlaySequence',
+        channelType: 'HO',
+        osType: 'Firefox',
+        osVersion:
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0',
+        playDate: alarmDate,
+        cinemaID: cinemaIds,
+        representationMovieCode: '',
+      })
+    );
 
-    return axios.post('http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx', formData, _.extend({}, axiosConfig, { headers: formData.getHeaders() }))
+    return axios
+      .post(
+        'http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx',
+        formData,
+        _.extend({}, axiosConfig, { headers: formData.getHeaders() })
+      )
       .then(response => response.data)
       .then(ServiceUtils.toCamelCaseKeys)
       .then(data => {
@@ -91,31 +95,48 @@ export default class LotteCinemaService {
           throw new Error(JSON.stringify(data));
         }
 
-        return data.playSeqs.items.map(
-          item => _.pick(
-            item,
-            ['screenDivisionNameKr', 'filmNameKr','screenNameKr','viewGradeNameKr','playSequence','screenId','movieCode','startTime','endTime','totalSeatCount','bookingSeatCount']
-          )
-        )
-      })
+        return data.playSeqs.items.map(item =>
+          _.pick(item, [
+            'screenDivisionNameKr',
+            'filmNameKr',
+            'screenNameKr',
+            'viewGradeNameKr',
+            'playSequence',
+            'screenId',
+            'movieCode',
+            'startTime',
+            'endTime',
+            'totalSeatCount',
+            'bookingSeatCount',
+          ])
+        );
+      });
   }
 
   static getSeats(cinemaId, screenId, alarmDate) {
     const formData = new FormData();
-    formData.append('paramList', JSON.stringify({
-      "MethodName":"GetSeats",
-      "channelType":"HO",
-      "osType":"Firefox",
-      "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
-      "cinemaId":cinemaId,
-      "screenId":screenId,
-      "playDate":alarmDate,
-      "playSequence":1,
-      "representationMovieCode":"100"
-    }));
+    formData.append(
+      'paramList',
+      JSON.stringify({
+        MethodName: 'GetSeats',
+        channelType: 'HO',
+        osType: 'Firefox',
+        osVersion:
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0',
+        cinemaId,
+        screenId,
+        playDate: alarmDate,
+        playSequence: 1,
+        representationMovieCode: '100',
+      })
+    );
 
-
-    return axios.post('http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx', formData, _.extend({}, axiosConfig, { headers: formData.getHeaders() }))
+    return axios
+      .post(
+        'http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx',
+        formData,
+        _.extend({}, axiosConfig, { headers: formData.getHeaders() })
+      )
       .then(response => response.data)
       .then(ServiceUtils.toCamelCaseKeys)
       .then(data => {
@@ -123,38 +144,46 @@ export default class LotteCinemaService {
           throw new Error(JSON.stringify(data));
         }
 
-        return data.seats.items.map(
-          item => _.pick(
-            item,
-            ['seatNo', 'seatXCoordinate', 'seatYCoordinate', 'seatXLength', 'seatYLength']
-          )
-        )
-      })
+        return data.seats.items.map(item =>
+          _.pick(item, [
+            'seatNo',
+            'seatXCoordinate',
+            'seatYCoordinate',
+            'seatXLength',
+            'seatYLength',
+          ])
+        );
+      });
   }
 
   static getMovie(movieCode) {
     const formData = new FormData();
-    formData.append('paramList', JSON.stringify({
-      "MethodName":"GetMovieDetail",
-      "channelType":"HO",
-      "osType":"Firefox",
-      "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
-      "multiLanguageID":"EN",
-      "representationMovieCode": `${movieCode}`
-    }));
+    formData.append(
+      'paramList',
+      JSON.stringify({
+        MethodName: 'GetMovieDetail',
+        channelType: 'HO',
+        osType: 'Firefox',
+        osVersion:
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0',
+        multiLanguageID: 'EN',
+        representationMovieCode: `${movieCode}`,
+      })
+    );
 
-
-    return axios.post('http://www.lottecinema.co.kr/LCWS/Movie/MovieData.aspx', formData, _.extend({}, axiosConfig, { headers: formData.getHeaders() }))
+    return axios
+      .post(
+        'http://www.lottecinema.co.kr/LCWS/Movie/MovieData.aspx',
+        formData,
+        _.extend({}, axiosConfig, { headers: formData.getHeaders() })
+      )
       .then(response => response.data)
       .then(ServiceUtils.toCamelCaseKeys)
       .then(data => {
         if (data.isOk !== 'true') {
           throw new Error(JSON.stringify(data));
         }
-        return _.pick(
-          data.movie,
-          ['movieNameKr', 'posterUrl']
-        );
-      })
+        return _.pick(data.movie, ['movieNameKr', 'posterUrl']);
+      });
   }
 }
