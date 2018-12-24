@@ -4,11 +4,12 @@ import moment from 'moment';
 import LotteCinemaService from '../../services/LotteCinemaService';
 
 export default (event, context, callback) => {
-  LotteCinemaService.getScreens(
-    _.get(event, 'queryStringParameters.alarmDate') ||
-      moment().format('YYYY-MM-DD'),
-    event.queryStringParameters.cinemaIds
-  )
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  const { cinemaIds, alarmDate = moment().format('YYYY-MM-DD') } =
+    _.get(event, 'queryStringParameters') || {};
+
+  LotteCinemaService.getScreens(alarmDate, cinemaIds)
     .then(body =>
       callback(null, {
         statusCode: 200,

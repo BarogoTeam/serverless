@@ -3,11 +3,12 @@ import _ from 'lodash';
 import LotteCinemaService from '../../services/LotteCinemaService';
 
 export default (event, context, callback) => {
-  LotteCinemaService.getSeats(
-    _.get(event, 'queryStringParameters.cinemaId'),
-    _.get(event, 'queryStringParameters.screenId'),
-    _.get(event, 'queryStringParameters.playDate')
-  )
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  const { cinemaId, screenId, playDate } =
+    _.get(event, 'queryStringParameters') || {};
+
+  LotteCinemaService.getSeats(cinemaId, screenId, playDate)
     .then(body =>
       callback(null, {
         statusCode: 200,

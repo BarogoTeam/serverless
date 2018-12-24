@@ -2,8 +2,11 @@ import _ from 'lodash';
 
 import LotteCinemaService from '../../services/LotteCinemaService';
 
-export default (event, context, callback) => {
-  LotteCinemaService.getMovie(_.get(event, 'pathParameters.id'))
+export default async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
+  const { id } = _.get(event, 'pathParameters');
+  LotteCinemaService.getMovie(id)
     .then(body =>
       callback(null, {
         statusCode: 200,

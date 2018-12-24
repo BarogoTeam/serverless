@@ -1,6 +1,8 @@
 import LotteCinemaService from '../../services/LotteCinemaService';
 
-export default (event, context, callback) => {
+export default async (event, context, callback) => {
+  context.callbackWaitsForEmptyEventLoop = false;
+
   LotteCinemaService.getCinemas()
     .then(body =>
       callback(null, {
