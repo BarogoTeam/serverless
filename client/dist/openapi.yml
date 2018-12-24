@@ -334,7 +334,7 @@ paths:
           description : 상영관 아이디
           example: "100702"
         - in: query
-          name: playDate
+          name: alarmDate
           schema:
             type: string
           required: true

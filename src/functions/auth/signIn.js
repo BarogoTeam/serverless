@@ -1,46 +1,35 @@
 import jwt from 'jsonwebtoken';
 import DatabaseUtils from '../../utils/DatabaseUtils';
+import ServiceUtils from '../../utils/ServiceUtils';
 
-export default async (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
+async function signIn(event) {
+  const db = await DatabaseUtils.connectMongoDB();
+  const user = JSON.parse(event.body);
 
-  const response = new Promise(resolve => {
-    DatabaseUtils.connectMongoDB().then(db => {
-      const user = JSON.parse(event.body);
-      const query = {
-        email: user.email,
-        password: user.password,
-      };
-      db.collection('users')
-        .find(query)
-        .count()
-        .then(cnt => {
-          if (cnt) {
-            resolve({
-              statusCode: 200,
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': true,
-              },
-              body: JSON.stringify(
-                jwt.sign({ data: user.email }, 'secret', { expiresIn: '24h' })
-              ),
-            });
-          } else {
-            resolve({
-              statusCode: 400,
-              headers: {
-                'Access-Control-Allow-Origin': '*',
-                'Access-Control-Allow-Credentials': true,
-              },
-              body: JSON.stringify({
-                errorMessage: 'Failed to authenticate',
-              }),
-            });
-          }
-        });
-    });
-  });
+  const query = {
+    email: user.email,
+    password: user.password,
+  };
+  const cnt = await db
+    .collection('users')
+    .find(query)
+    .count();
 
-  callback(null, await response);
-};
+  if (cnt === 0) {
+    return {
+      statusCode: 400,
+      body: JSON.stringify({
+        errorMessage: 'Failed to authenticate',
+      }),
+    };
+  }
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(
+      jwt.sign({ data: user.email }, 'secret', { expiresIn: '24h' })
+    ),
+  };
+}
+
+export default ServiceUtils.applyMiddleware(signIn);

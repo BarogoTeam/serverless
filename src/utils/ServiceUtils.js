@@ -25,4 +25,35 @@ export default class ServiceUtils {
     }
     return node;
   }
+
+  static applyMiddleware(fn) {
+    return (event, context, callback) => {
+      context.callbackWaitsForEmptyEventLoop = false;
+
+      fn(event)
+        .then(response =>
+          callback(
+            null,
+            _.assign({}, response, {
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Credentials': true,
+              },
+            })
+          )
+        )
+        .catch(e =>
+          callback(null, {
+            statusCode: 502,
+            headers: {
+              'Access-Control-Allow-Origin': '*',
+              'Access-Control-Allow-Credentials': true,
+            },
+            body: JSON.stringify({
+              errorMessage: e.message,
+            }),
+          })
+        );
+    };
+  }
 }

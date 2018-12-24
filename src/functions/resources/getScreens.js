@@ -2,32 +2,18 @@ import _ from 'lodash';
 import moment from 'moment';
 
 import LotteCinemaService from '../../services/LotteCinemaService';
+import ServiceUtils from '../../utils/ServiceUtils';
 
-export default (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
-
+async function getScreens(event) {
   const { cinemaIds, alarmDate = moment().format('YYYY-MM-DD') } =
     _.get(event, 'queryStringParameters') || {};
 
-  LotteCinemaService.getScreens(alarmDate, cinemaIds)
-    .then(body =>
-      callback(null, {
-        statusCode: 200,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-        },
-        body: JSON.stringify(body),
-      })
-    )
-    .catch(e => {
-      callback(null, {
-        statusCode: 502,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Credentials': true,
-        },
-        body: JSON.stringify(e.message),
-      });
-    });
-};
+  const screens = await LotteCinemaService.getScreens(alarmDate, cinemaIds);
+
+  return {
+    statusCode: 200,
+    body: JSON.stringify(screens),
+  };
+}
+
+export default ServiceUtils.applyMiddleware(getScreens);

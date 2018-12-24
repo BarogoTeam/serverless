@@ -1,39 +1,22 @@
 import DatabaseUtils from '../../utils/DatabaseUtils';
+import ServiceUtils from '../../utils/ServiceUtils';
 
-export default async (event, context, callback) => {
-  context.callbackWaitsForEmptyEventLoop = false;
+async function signUp(event) {
+  const db = await DatabaseUtils.connectMongoDB();
+  const user = JSON.parse(event.body);
 
-  const response = new Promise(resolve => {
-    DatabaseUtils.connectMongoDB().then(db =>
-      db
-        .collection('users')
-        .insertOne(JSON.parse(event.body))
-        .then(() => {
-          resolve({
-            statusCode: 201,
-            headers: {
-              'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-              'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
-            },
-            body: JSON.stringify({
-              message: 'Created',
-            }),
-          });
-        })
-        .catch(error => {
-          resolve({
-            statusCode: 400,
-            headers: {
-              'Access-Control-Allow-Origin': '*', // Required for CORS support to work
-              'Access-Control-Allow-Credentials': true, // Required for cookies, authorization headers with HTTPS
-            },
-            body: JSON.stringify({
-              error,
-            }),
-          });
-        })
-    );
-  });
+  try {
+    await db.collection('users').insertOne(user);
+  } catch (e) {
+    throw new Error(e.errmsg);
+  }
 
-  callback(null, await response);
-};
+  return {
+    statusCode: 201,
+    body: JSON.stringify({
+      message: 'Created',
+    }),
+  };
+}
+
+export default ServiceUtils.applyMiddleware(signUp);

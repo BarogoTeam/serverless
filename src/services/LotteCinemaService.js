@@ -100,7 +100,7 @@ export default class LotteCinemaService {
       })
   }
 
-  static getSeats(cinemaId, screenId, playDate) {
+  static getSeats(cinemaId, screenId, alarmDate) {
     const formData = new FormData();
     formData.append('paramList', JSON.stringify({
       "MethodName":"GetSeats",
@@ -109,7 +109,7 @@ export default class LotteCinemaService {
       "osVersion":"Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0",
       "cinemaId":cinemaId,
       "screenId":screenId,
-      "playDate":playDate,
+      "playDate":alarmDate,
       "playSequence":1,
       "representationMovieCode":"100"
     }));
