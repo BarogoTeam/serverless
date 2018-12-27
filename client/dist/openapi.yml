@@ -107,19 +107,19 @@ components:
     SeatModel:
       type: object
       properties:
-        SeatXCoordinate:
+        seatXCoordinate:
           type: integer
           example: 1234
-        SeatYCoordinate:
+        seatYCoordinate:
           type: integer
           example: 4321
-        SeatXLength:
+        seatXLength:
           type: integer
           example: 123
-        SeatYLength:
+        seatYLength:
           type: integer
           example: 321
-        SeatNo:
+        seatNo:
           type: string
           example: "1A01"
 
