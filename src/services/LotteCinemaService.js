@@ -113,25 +113,28 @@ export default class LotteCinemaService {
       });
   }
 
-  static getSeats(cinemaId, screenId, alarmDate) {
-    const formData = new FormData();
-    formData.append(
-      'paramList',
-      JSON.stringify({
-        MethodName: 'GetSeats',
-        channelType: 'HO',
-        osType: 'Firefox',
-        osVersion:
-          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0',
-        cinemaId,
-        screenId,
-        playDate: alarmDate,
-        playSequence: 1,
-        representationMovieCode: '100',
-      })
-    );
+  static getSeats(screensJSON) {
+    const screens = JSON.parse(screensJSON);
+    
+    const getSeats = (cinemaId, screenId, playDate) => {
+      const formData = new FormData();
+      formData.append(
+        'paramList',
+        JSON.stringify({
+          MethodName: 'GetSeats',
+          channelType: 'HO',
+          osType: 'Firefox',
+          osVersion:
+            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0',
+          cinemaId,
+          screenId,
+          playDate,
+          playSequence: 1,
+          representationMovieCode: '100',
+        })
+      );  
 
-    return axios
+      return axios
       .post(
         'http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx',
         formData,
@@ -154,6 +157,8 @@ export default class LotteCinemaService {
           ])
         );
       });
+    }
+    return 
   }
 
   static getMovie(movieCode) {
