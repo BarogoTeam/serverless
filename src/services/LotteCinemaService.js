@@ -115,8 +115,22 @@ export default class LotteCinemaService {
 
   static getSeats(screensJSON) {
     const screens = JSON.parse(screensJSON);
-    
-    const getSeats = (cinemaId, screenId, playDate) => {
+    const seats = [];
+
+    const func2 = (index = 0) => {
+      const {cinemaId, screenId, alarmDate} = screens[index];
+
+      return func(cinemaId, screenId, alarmDate).then((result) => {
+        seats.push(result);
+        if(index < screens.length) {
+          return func2(index+1);
+        }
+
+        return Promise.resolve(seats);
+      });
+    }
+
+    const func = (cinemaId, screenId, playDate) => {
       const formData = new FormData();
       formData.append(
         'paramList',
@@ -158,7 +172,8 @@ export default class LotteCinemaService {
         );
       });
     }
-    return 
+
+    return func2();
   }
 
   static getMovie(movieCode) {
