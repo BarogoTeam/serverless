@@ -40,7 +40,7 @@ custom:
       - X-Requested-By
     allowCredentials: false
   client:
-    bucketName: zupzup-serverless-finch
+    bucketName: docs.zupzups.com
 
 provider:
   name: aws
