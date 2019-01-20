@@ -95,6 +95,18 @@ components:
           items:
             type: string
             example: "1B03"
+    ScreenMovieModel:
+      type: object
+      properties:
+        MovieCode:
+          type: integer
+          example: 13681
+        MovieNameKR:
+          type: string
+          example: '말모이'
+        PosterURL:
+          type: string
+          example: 'http://caching.lottecinema.co.kr//Media/MovieFile/MovieImg/201901/13681_103_1.jpg'
     UserModel:
       type: object
       properties:
@@ -351,3 +363,23 @@ paths:
                   $ref: '#/components/schemas/SeatModel'
         '401':
           $ref: '#/components/responses/UnauthorizedError'
+
+  /screenMovies:
+    get:
+      tags:
+        - 영화관
+      operationId: getScreenMovies
+      summary: '현재 상영중인 영화의 목록을 내려줍니다.'
+      description: '현재 상영중인 영화의 목록을 내려줍니다.'
+      consumes:
+        - application/json
+      requestBody:
+        description: User Object
+        required: true
+      responses:
+        '200':
+          description: 영화정보
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ScreenMovieModel'

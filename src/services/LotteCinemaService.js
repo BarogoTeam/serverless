@@ -113,42 +113,25 @@ export default class LotteCinemaService {
       });
   }
 
-  static getSeats(screensJSON) {
-    const screens = JSON.parse(screensJSON);
-    const seats = [];
+  static getSeats(cinemaId, screenId, alarmDate) {
+    const formData = new FormData();
+    formData.append(
+      'paramList',
+      JSON.stringify({
+        MethodName: 'GetSeats',
+        channelType: 'HO',
+        osType: 'Firefox',
+        osVersion:
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0',
+        cinemaId,
+        screenId,
+        playDate: alarmDate,
+        playSequence: 1,
+        representationMovieCode: '100',
+      })
+    );
 
-    const func2 = (index = 0) => {
-      const {cinemaId, screenId, alarmDate} = screens[index];
-
-      return func(cinemaId, screenId, alarmDate).then((result) => {
-        seats.push(result);
-        if(index < screens.length) {
-          return func2(index+1);
-        }
-
-        return Promise.resolve(seats);
-      });
-    }
-
-    const func = (cinemaId, screenId, playDate) => {
-      const formData = new FormData();
-      formData.append(
-        'paramList',
-        JSON.stringify({
-          MethodName: 'GetSeats',
-          channelType: 'HO',
-          osType: 'Firefox',
-          osVersion:
-            'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:60.0) Gecko/20100101 Firefox/60.0',
-          cinemaId,
-          screenId,
-          playDate,
-          playSequence: 1,
-          representationMovieCode: '100',
-        })
-      );  
-
-      return axios
+    return axios
       .post(
         'http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx',
         formData,
@@ -171,9 +154,6 @@ export default class LotteCinemaService {
           ])
         );
       });
-    }
-
-    return func2();
   }
 
   static getMovie(movieCode) {
@@ -204,6 +184,43 @@ export default class LotteCinemaService {
           throw new Error(JSON.stringify(data));
         }
         return _.pick(data.movie, ['movieNameKr', 'posterUrl']);
+      });
+  }
+
+  static getScreenMovies() {
+    const formData = new FormData();
+    formData.append(
+      'paramList',
+      JSON.stringify({
+        MethodName: 'GetMovies',
+        channelType: 'HO',
+        osType: 'Chrome',
+        osVersion:
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_13_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.106 Safari/537.36',
+        multiLanguageID: 'KR',
+        division: 1,
+        moviePlayYN: 'Y',
+        orderType: '1',
+        blockSize: 100,
+        pageNo: 1,
+      })
+    );
+
+    return axios
+      .post(
+        'http://www.lottecinema.co.kr/LCWS/Movie/MovieData.aspx',
+        formData,
+        _.extend({}, axiosConfig, { headers: formData.getHeaders() })
+      )
+      .then(response => response.data)
+      .then(ServiceUtils.toCamelCaseKeys)
+      .then(data => {
+        if (data.isOk !== 'true') {
+          throw new Error(JSON.stringify(data));
+        }
+        return data.movies.items.map(item =>
+          _.pick(item, ['representationMovieCode', 'movieNameKr', 'posterUrl'])
+        );
       });
   }
 }

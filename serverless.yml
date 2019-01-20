@@ -138,11 +138,19 @@ functions:
           cors: ${self:custom.cors, "true"}
 
   postAlarms:
-    handler: src/functions/alarms/handler.postAlarms
+    handler: src/functions/resources/handler.postAlarms
     events:
       - http:
           path: alarms
           method: post
+          cors: ${self:custom.cors, "true"}
+
+  getScreenMovies:
+    handler: src/functions/resources/handler.getScreenMovies
+    events:
+      - http:
+          path: screenMovies
+          method: get
           cors: ${self:custom.cors, "true"}
 
 #    The following are a few example events you can configure
