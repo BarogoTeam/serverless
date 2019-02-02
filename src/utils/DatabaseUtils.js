@@ -1,4 +1,4 @@
-const MongoClient = require('mongodb').MongoClient;
+import MongoClient from 'mongodb';
 
 export default class DatabaseUtils {
   static async connectMongoDB() {

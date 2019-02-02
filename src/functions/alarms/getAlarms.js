@@ -5,7 +5,7 @@ import DatabaseUtils from '../../utils/DatabaseUtils';
 import ServiceUtils from '../../utils/ServiceUtils';
 
 async function getAlarms(event) {
-  if (!_.get(event, 'headers.Authorization')) {
+  if (!_.get(event, 'headers.authorization')) {
     return {
       statusCode: 401,
       body: JSON.stringify({
@@ -14,7 +14,7 @@ async function getAlarms(event) {
     };
   }
 
-  const token = event.headers.Authorization.split(' ')[1];
+  const token = event.headers.authorization.split(' ')[1];
   const CRAWLER_ID = 'ZupzupCrawler@zupzup.com';
   const isCrawler = email => email === CRAWLER_ID;
 
@@ -38,9 +38,18 @@ async function getAlarms(event) {
     .find(query)
     .toArray();
 
+  const movies = await db
+    .collection('movies')
+    .find({})
+    .toArray();
+
+  const result = alarms.map(alarm =>
+    Object.assign({}, alarm, movies.find(movie => movie.id === alarm.movieId))
+  );
+
   return {
     statusCode: 200,
-    body: JSON.stringify(alarms),
+    body: JSON.stringify(result),
   };
 }
 
