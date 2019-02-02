@@ -5,7 +5,7 @@ import DatabaseUtils from '../../utils/DatabaseUtils';
 import ServiceUtils from '../../utils/ServiceUtils';
 
 async function postAlarms(event) {
-  if (!_.get(event, 'headers.Authorization')) {
+  if (!_.get(event, 'headers.authorization')) {
     return {
       statusCode: 401,
       body: JSON.stringify({
@@ -14,7 +14,7 @@ async function postAlarms(event) {
     };
   }
 
-  const token = event.headers.Authorization.split(' ')[1];
+  const token = event.headers.authorization.split(' ')[1];
   const alarm = JSON.parse(event.body);
 
   let email = '';

@@ -138,7 +138,7 @@ functions:
           cors: ${self:custom.cors, "true"}
 
   postAlarms:
-    handler: src/functions/resources/handler.postAlarms
+    handler: src/functions/alarms/handler.postAlarms
     events:
       - http:
           path: alarms
