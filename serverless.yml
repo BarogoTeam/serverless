@@ -71,7 +71,7 @@ provider:
     NODE_ENV: ${self:provider.stage}
     MONGODB: mongodb://barogo:barogo123!@ds263380.mlab.com:63380/zupzup
     PROXY_HOST: 183.101.136.11
-    PROXY_PORT: '3128'
+    PROXY_PORT: '32198'
 
 # you can add packaging information here
 package:
