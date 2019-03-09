@@ -113,3 +113,12 @@ $ npm test
     npm run deploy:openapi
     ```
 
+## 간단정리 
+    1. 로컬에서 실행하기 
+        npm run build
+        npm start
+        swagger 에서 local로 설정 후 테스트 
+    2. 서버 반영하기 
+        npm run build
+        server deploy
+        npm run deploy:openapi
