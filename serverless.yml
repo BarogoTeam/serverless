@@ -33,7 +33,7 @@ custom:
     headers:
       - Content-Type
       - X-Amz-Date
-      - Authorization
+      - authorization
       - X-Api-Key
       - X-Amz-Security-Token
       - X-Requested-With
@@ -70,8 +70,10 @@ provider:
   environment:
     NODE_ENV: ${self:provider.stage}
     MONGODB: mongodb://barogo:barogo123!@ds263380.mlab.com:63380/zupzup
-    PROXY_HOST: 183.101.136.11
-    PROXY_PORT: '32198'
+    PROXY_HOST: 127.0.0.1
+    proxy_port: 4000
+    #PROXY_HOST: 183.101.136.11
+    #PROXY_PORT: '32198'
 
 # you can add packaging information here
 package:
