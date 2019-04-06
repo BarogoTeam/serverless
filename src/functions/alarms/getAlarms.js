@@ -44,9 +44,12 @@ async function getAlarms(event) {
     .toArray();
 
   const result = alarms.map(alarm =>
-    Object.assign({}, alarm, movies.find(movie => movie.id === alarm.movieId))
+    Object.assign(
+      {},
+      alarm,
+      movies.find(movie => movie.movieId === alarm.movieId)
+    )
   );
-
   return {
     statusCode: 200,
     body: JSON.stringify(result),

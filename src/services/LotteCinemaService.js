@@ -6,10 +6,10 @@ import ServiceUtils from '../utils/ServiceUtils';
 const axiosConfig = {
   timeout: 5000,
   responseType: 'json',
-  proxy: {
-    host: process.env.PROXY_HOST,
-    port: process.env.PROXY_PORT,
-  },
+  // proxy: {
+  //  host: '127.0.0.1',
+  //  port: '4000',
+  // },
 };
 
 export default class LotteCinemaService {
@@ -26,7 +26,6 @@ export default class LotteCinemaService {
         memberOnNo: '0',
       })
     );
-
     const data = await axios
       .post(
         'http://www.lottecinema.co.kr/LCWS/Ticketing/TicketingData.aspx',
@@ -37,11 +36,9 @@ export default class LotteCinemaService {
         _.isString(response.data) ? JSON.parse(response.data) : response.data
       )
       .then(ServiceUtils.toCamelCaseKeys);
-
     if (data.isOk !== 'true') {
       throw new Error(JSON.stringify(data));
     }
-
     const DIVISION_CODES = [
       '',
       '서울',
