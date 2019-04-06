@@ -6,10 +6,10 @@ import ServiceUtils from '../utils/ServiceUtils';
 const axiosConfig = {
   timeout: 5000,
   responseType: 'json',
-  proxy: {
-    host: process.env.PROXY_HOST,
-    port: process.env.PROXY_PORT,
-  },
+  // proxy: {
+  //  host: process.env.PROXY_HOST,
+  //  port: process.env.PROXY_PORT,
+  // },
 };
 
 export default class LotteCinemaService {
